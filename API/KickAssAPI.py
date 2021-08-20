@@ -9,9 +9,18 @@ class KickAssAPI():
 
         url = "https://katcr.to/usearch/" + query + "/"
         results = requests.get(url)
-        soup = BeautifulSoup(results.text, "html.parser")
-        results = soup.find_all("a", {"class": "cellMainLink"})
 
+        if results.status_code == 200:
+            soup = BeautifulSoup(results.text, "html.parser")
+            results = soup.find_all("a", {"class": "cellMainLink"})
+        elif results.status_code == 403:
+            print("\nThe URL (\"https://katcr.to\") responded with code 403.\nThis means that the server understood the request but refuses to authorize it.")
+            exit()
+        elif results.status_code == 404:
+            print("\nThe URL (\"https://katcr.to\") responded with code 404.\nThis means that the server cannot find the page you requested.")
+            exit()
+        else:
+            print("\nThe URL (\"https://katcr.to\") responded with code " + str(results.status_code) + ".\nThis means that the server is not responding to the request.")
         return results
 
 
