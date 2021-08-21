@@ -1,6 +1,6 @@
 # ABOUT
 
-A command-line based, minimal torrent streaming script made using Python and Webtorrent-cli.
+A command-line based, minimal torrent streaming client made using Python and Webtorrent-cli.
 
 ## Installation
 
