@@ -16,12 +16,14 @@ class KickFlix():
 ██╔═██╗░██║██║░░██╗██╔═██╗░██╔══╝░░██║░░░░░██║░██╔██╗░
 ██║░╚██╗██║╚█████╔╝██║░╚██╗██║░░░░░███████╗██║██╔╝╚██╗
 ╚═╝░░╚═╝╚═╝░╚════╝░╚═╝░░╚═╝╚═╝░░░░░╚══════╝╚═╝╚═╝░░╚═╝
-      Minimal command line based torrent streamer
+  Minimal command line based torrent streaming client
         """)
         parser = ArgumentParser(description='KickFlix - Minimal torrent player')
         parser.add_argument('-s', '--stream', type=str, help='Stream a torrent')
         parser.add_argument('-d', '--download', help='Download a torrent')
         self.args = parser.parse_args()
+
+        self.api = KickAssAPI()
     
     def run(self):
         """ Run the program """
@@ -90,7 +92,7 @@ class KickFlix():
     def get_magnet(self,search_result,index) -> str:
         """ Get magnet link of selected torrent """ 
         try:
-            magnet = KickAssAPI.magnet(search_result,index)
+            magnet = self.api.magnet(search_result,index)
             return magnet
         except IndexError:
             print("0 search results")
@@ -111,7 +113,7 @@ class KickFlix():
         """ Search for torrents """
         
         print(f"Searching for \"{query}\"")
-        search_result = KickAssAPI.search(query)
+        search_result = self.api.search(query)
         if search_result == []:
             print("0 search results")
             print("\n-----------------#####-----------------\n")
