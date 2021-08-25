@@ -116,12 +116,12 @@ class KickFlix():
         print(f"Searching for \"{query}\"")
         search_result = self.api.search(query)
         if search_result == []:
-            print("0 search results")
+            print("0 search results\n")
             print("\n-----------------#####-----------------\n")
             if self.args.stream == None and self.args.download == None:
                 self.run()
             exit()
-        print(str(len([search.text for search in search_result])) + " search results found")
+        print(str(len([search.text for search in search_result])) + " search results found\n")
         time.sleep(0.7)
         
         return search_result
