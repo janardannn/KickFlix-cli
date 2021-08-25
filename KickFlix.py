@@ -53,7 +53,7 @@ class KickFlix():
             r = 1
             for result in results:
                 text = result.text.replace("\n","")
-                print(f'{r}. {text}')
+                print(f'{r}. {text}\n')
                 r += 1
             
             while True:
