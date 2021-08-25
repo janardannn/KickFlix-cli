@@ -52,7 +52,8 @@ class KickFlix():
                 results = self.search_kickass(query)
             r = 1
             for result in results:
-                print(f'{r}. {result.text}')
+                text = result.text.replace("\n","")
+                print(f'{r}. {text}')
                 r += 1
             
             while True:
@@ -132,3 +133,4 @@ def main():
     kickflix.run()
 
 main()
+
