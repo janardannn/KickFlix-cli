@@ -24,6 +24,7 @@ class KickAssAPI():
             exit()
         else:
             print("\nThe URL (\"https://katcr.to\") responded with code " + str(results.status_code) + ".\nThis means that the server is not responding to the request.")
+        
         return results
 
 
