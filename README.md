@@ -29,6 +29,10 @@ Downloading a torrent from command line (downloads the torrent at top in search 
 ```python
 python3 KickFlix.py -d "torrent"
 ```
+To get the magnet of a torrent from command line (prints out the magnet of the torrent at top in search results)
+```python
+python3 KickFlix.py -m "torrent"
+```
 Using the script to search torrents and then to stream/download selected torrent
 ```python
 python3 KickFlix.py
