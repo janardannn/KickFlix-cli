@@ -21,6 +21,7 @@ class KickFlix():
         parser = ArgumentParser(description='KickFlix - Minimal torrent player')
         parser.add_argument('-s', '--stream', type=str, help='Stream a torrent')
         parser.add_argument('-d', '--download', help='Download a torrent')
+        parser.add_argument('-m', '--magnet', help='Get the magnet link of a torrent')
         self.args = parser.parse_args()
 
         self.api = KickAssAPI()
@@ -43,6 +44,13 @@ class KickFlix():
             time.sleep(0.7)
             self.download(magnet)
             exit()
+        
+        elif self.args.magnet:
+            search_results = self.search_kickass(self.args.magnet)
+            magnet = self.get_magnet(search_results,0)
+            print("\nMagnet for : ",str(search_results[0].text)+ "\n")
+            print(magnet)
+            exit()  
         
         else:
             query = input('What do you want to search for (q) to quit: ').strip()
