@@ -88,7 +88,7 @@ class KickFlix():
 
                         print("\n-----------------#####-----------------\n")
                         self.run()
-                except IndexError:
+                except (IndexError,ValueError):
                     print("""
 *****************************************************                   
   Please retry entering mode with torrent selection 
