@@ -66,7 +66,7 @@ class KickFlix():
             
             while True:
                 try:
-                    user_input = input('\nSelect a torrent(s/d) (q) to quit (r) to re-search: ').strip()
+                    user_input = input('\nSelect a torrent(s/d/m) (q) to quit (r) to re-search: ').strip()
                     if user_input.lower() == "q":
                         exit()
                     elif user_input.lower() == "r":
@@ -85,6 +85,10 @@ class KickFlix():
                             print("\nDownloading: ",results[index].text)
                             time.sleep(0.7)
                             self.download(magnet)
+                        
+                        elif mode == "m":
+                            print("\nMagnet for : ",str(results[index].text)+ "\n")
+                            print(magnet)
 
                         print("\n-----------------#####-----------------\n")
                         self.run()
