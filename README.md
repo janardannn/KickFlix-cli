@@ -37,3 +37,4 @@ Using the script to search torrents and then to stream/download selected torrent
 ```python
 python3 KickFlix.py
 ```
+A video on how to use the script is [here](https://www.youtube.com/watch?v=Gh0XqfvKtcE)
