@@ -31,24 +31,24 @@ class KickFlix():
 
         if self.args.stream:
             search_results = self.search_kickass(self.args.stream)
-            magnet = self.get_magnet(search_results,0)
-            print("\nNow streaming: ",search_results[0].text)
+            magnet = self.get_magnet(search_results[1]['page_url'])
+            print("\nNow streaming:\n",search_results[1]['title'])
             time.sleep(0.7)
             self.stream(magnet)
             exit()
 
         elif self.args.download:
             search_results = self.search_kickass(self.args.download)
-            magnet = self.get_magnet(search_results,0)
-            print("\nDownloading: ",search_results[0].text)
+            magnet = self.get_magnet(search_results[1]['page_url'])
+            print("\nDownloading: \n",search_results[1]['title'])
             time.sleep(0.7)
             self.download(magnet)
             exit()
         
         elif self.args.magnet:
             search_results = self.search_kickass(self.args.magnet)
-            magnet = self.get_magnet(search_results,0)
-            print("\nMagnet for : ",str(search_results[0].text)+ "\n")
+            magnet = self.get_magnet(search_results[1]['page_url'])
+            print("\nMagnet for : ",str(search_results[1]['title'])+ "\n")
             print(magnet)
             exit()  
         
@@ -58,11 +58,10 @@ class KickFlix():
                 exit()
             else:
                 results = self.search_kickass(query)
-            r = 1
-            for result in results:
-                text = result.text.replace("\n","")
-                print(f'{r}. {text}\n')
-                r += 1
+
+            for count in results.keys():
+                print(f"{count}. {results[count]['title']}\n")
+
             
             while True:
                 try:
@@ -73,21 +72,21 @@ class KickFlix():
                         print("\n-----------------#####-----------------\n")
                         self.run()
                     elif user_input != "":
-                        index = int(user_input[0]) - 1
+                        index = int(user_input[0])
                         mode = user_input[1]
-                        magnet = self.get_magnet(results,index)
+                        magnet = self.get_magnet(results[index]['page_url'])
 
                         if mode == "s":
-                            print("\nNow streaming: ",results[index].text)
+                            print("\nNow streaming: ",results[index]['title'])
                             time.sleep(0.7)
                             self.stream(magnet)
                         elif mode == "d":
-                            print("\nDownloading: ",results[index].text)
+                            print("\nDownloading: ",results[index]['title'])
                             time.sleep(0.7)
                             self.download(magnet)
                         
                         elif mode == "m":
-                            print("\nMagnet for : ",str(results[index].text)+ "\n")
+                            print("\nMagnet for : ",str(results[index]['title'])+ "\n")
                             print(magnet)
 
                         print("\n-----------------#####-----------------\n")
@@ -102,15 +101,11 @@ class KickFlix():
 
             
 
-    def get_magnet(self,search_result,index) -> str:
+    def get_magnet(self,page_url) -> str:
         """ Get magnet link of selected torrent """ 
-        try:
-            magnet = self.api.magnet(search_result,index)
-            return magnet
-        except IndexError:
-            print("0 search results")
-            print("\n-----------------#####-----------------\n")
-            self.run()
+        magnet = self.api.magnet(page_url)
+        return magnet
+        
 
     def download(self,magnet):
         """ Download a torrent """
@@ -127,13 +122,13 @@ class KickFlix():
         
         print(f"Searching for \"{query}\"")
         search_result = self.api.search(query)
-        if search_result == []:
+        if search_result == {}:
             print("0 search results\n")
             print("\n-----------------#####-----------------\n")
             if self.args.stream == None and self.args.download == None:
                 self.run()
             exit()
-        print(str(len([search.text for search in search_result])) + " search results found\n")
+        print(str(len(search_result)) + " search results found\n")
         time.sleep(0.7)
         
         return search_result

@@ -15,7 +15,16 @@ class KickAssAPI():
 
         if results.status_code == 200:
             soup = BeautifulSoup(results.text, "html.parser")
-            search_results = soup.find_all("a", {"class": "cellMainLink"})
+            resp = soup.find_all("a", {"class": "cellMainLink"})
+            search_results = {}
+            
+            n = 1
+            for r in resp:
+                title = r.text.replace("\n","").strip()
+                page_url = r.get("href").strip()
+                search_results[n] = {"title": title, "page_url": page_url}
+                n+=1
+
             results.close()
 
         elif results.status_code == 403:
@@ -33,11 +42,11 @@ class KickAssAPI():
         return search_results
 
 
-    def magnet(self,search_dict,index=0) -> str:
+    def magnet(self,page_url) -> str:
 
         """ Returns the magnet link of the selected torrent """
 
-        magnet_page = requests.get("https://katcr.to"+search_dict[index].get("href"), headers=self.headers)
+        magnet_page = requests.get("https://katcr.to"+page_url, headers=self.headers)
         magnet_page_bs = BeautifulSoup(magnet_page.text, "html.parser")
         magnet_link = magnet_page_bs.find("a", {"class": "kaGiantButton"}).get("href")
         magnet_page.close()
