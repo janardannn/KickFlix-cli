@@ -25,7 +25,8 @@ class KickFlix():
         parser.add_argument('-m', '--magnet', help='Get the magnet link of a torrent')
         self.args = parser.parse_args()
 
-        self.API = "https://kickass-api-unofficial.herokuapp.com/"
+        self.API_SEARCH = "https://kickass-api-unofficial.herokuapp.com/search?torrent="
+        self.API_MAGNET = "https://kickass-api-unofficial.herokuapp.com/magnet?page_url="
     
     def run(self):
         """ Run the program """
@@ -104,7 +105,7 @@ class KickFlix():
 
     def get_magnet(self,page_url) -> str:
         """ Get magnet link of selected torrent """ 
-        resp = requests.get(self.API + "magnet?page_url=" + page_url)
+        resp = requests.get(self.API_MAGNET + page_url)
         resp.close()
         magnet = json.loads(resp.text)
         
@@ -126,7 +127,7 @@ class KickFlix():
         
         print(f"Searching for \"{query}\"")
 
-        resp = requests.get(self.API + "search?torrent=" + query)
+        resp = requests.get(self.API_SEARCH + query)
         resp.close()
         search_result = json.loads(resp.text)
 
