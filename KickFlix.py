@@ -73,7 +73,7 @@ class KickFlix():
                     elif user_input.lower() == "r":
                         print("\n-----------------#####-----------------\n")
                         self.run()
-                    elif user_input != "":
+                    elif user_input != "" and len(user_input) < 3:
                         index = user_input[0]
                         mode = user_input[1]
                         magnet = self.get_magnet(results[index]['page_url'])
@@ -93,6 +93,9 @@ class KickFlix():
 
                         print("\n-----------------#####-----------------\n")
                         self.run()
+                    elif len(user_input) > 2:
+                        raise ValueError
+                         
                 except (IndexError,ValueError):
                     print("""
 *****************************************************                   
