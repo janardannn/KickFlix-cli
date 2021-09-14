@@ -1,7 +1,8 @@
 import os
 import time
+import json
+import requests
 from argparse import ArgumentParser
-from API.KickAssAPI import KickAssAPI
 
 class KickFlix():
 
@@ -24,31 +25,31 @@ class KickFlix():
         parser.add_argument('-m', '--magnet', help='Get the magnet link of a torrent')
         self.args = parser.parse_args()
 
-        self.api = KickAssAPI()
+        self.API = "https://kickass-api-unofficial.herokuapp.com/"
     
     def run(self):
         """ Run the program """
 
         if self.args.stream:
             search_results = self.search_kickass(self.args.stream)
-            magnet = self.get_magnet(search_results[1]['page_url'])
-            print("\nNow streaming:\n",search_results[1]['title'])
+            magnet = self.get_magnet(search_results["1"]['page_url'])
+            print("\nNow streaming:\n",search_results["1"]['title'])
             time.sleep(0.7)
             self.stream(magnet)
             exit()
 
         elif self.args.download:
             search_results = self.search_kickass(self.args.download)
-            magnet = self.get_magnet(search_results[1]['page_url'])
-            print("\nDownloading: \n",search_results[1]['title'])
+            magnet = self.get_magnet(search_results["1"]['page_url'])
+            print("\nDownloading: \n",search_results["1"]['title'])
             time.sleep(0.7)
             self.download(magnet)
             exit()
         
         elif self.args.magnet:
             search_results = self.search_kickass(self.args.magnet)
-            magnet = self.get_magnet(search_results[1]['page_url'])
-            print("\nMagnet for : ",str(search_results[1]['title'])+ "\n")
+            magnet = self.get_magnet(search_results["1"]['page_url'])
+            print("\nMagnet for : ",str(search_results["1"]['title'])+ "\n")
             print(magnet)
             exit()  
         
@@ -72,7 +73,7 @@ class KickFlix():
                         print("\n-----------------#####-----------------\n")
                         self.run()
                     elif user_input != "":
-                        index = int(user_input[0])
+                        index = user_input[0]
                         mode = user_input[1]
                         magnet = self.get_magnet(results[index]['page_url'])
 
@@ -103,8 +104,11 @@ class KickFlix():
 
     def get_magnet(self,page_url) -> str:
         """ Get magnet link of selected torrent """ 
-        magnet = self.api.magnet(page_url)
-        return magnet
+        resp = requests.get(self.API + "magnet?page_url=" + page_url)
+        resp.close()
+        magnet = json.loads(resp.text)
+        
+        return (magnet['magnet'])
         
 
     def download(self,magnet):
@@ -121,7 +125,11 @@ class KickFlix():
         """ Search for torrents """
         
         print(f"Searching for \"{query}\"")
-        search_result = self.api.search(query)
+
+        resp = requests.get(self.API + "search?torrent=" + query)
+        resp.close()
+        search_result = json.loads(resp.text)
+
         if search_result == {}:
             print("0 search results\n")
             print("\n-----------------#####-----------------\n")
