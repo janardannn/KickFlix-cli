@@ -151,11 +151,16 @@ class KickFlix():
 
 def main(): 
     """ API check """
+
+    print("Checking API status...")
+    
     if requests.get("https://kickass-api-unofficial.herokuapp.com/").status_code == 200:
+        print("API is up and running :D")
         kickflix = KickFlix()
         kickflix.run()
     else:
-        print("The API is currently down :(")
+        print("API is currently down :(")
+        print("report issues at github.com/janardonh/KickFlix")
 
 main()
 
