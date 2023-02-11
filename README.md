@@ -1,5 +1,5 @@
 # ABOUT
-
+This module doesn't work as of now because KickAss Torrents changed the structure of their webpages. Need help porting it over to 1337x.to
 A command-line based, minimal torrent streaming client made using Python and Webtorrent-cli.
 
 ## Installation
